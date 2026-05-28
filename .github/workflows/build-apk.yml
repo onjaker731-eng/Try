@@ -30,6 +30,10 @@ jobs:
         ndk-version: '25.1.8937393'
         build-tools-version: '31.0.0'
     
+    - name: Accept Android licenses
+      run: |
+        echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+    
     - name: Install dependencies
       run: |
         pip install --upgrade pip
