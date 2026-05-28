@@ -1,0 +1,132 @@
+🎬 ФАЙЛИ ДЛЯ КОМПІЛЯЦІЇ .EXE
+═══════════════════════════════════════════════════════
+
+📦 ЩО БУЛО СТВОРЕНО:
+────────────────────────
+
+dist/YouTube-Downloader     - Linux виконуваний файл
+dist/YouTube-Downloader.exe - Копія для Windows (потребує Windows для запуску)
+build_exe.bat               - Скрипт для автоматичної компіляції на Windows
+BUILD_EXE.md                - Повні інструкції
+
+
+❓ ЧОМУ .EXE НА LINUX?
+────────────────────────
+
+На Linux машині PyInstaller створює Linux ELF файли, а не Windows .exe.
+
+Справжній Windows .exe можна створити ТІЛЬКИ на Windows машині!
+
+
+✅ ЩО ПОТРІБНО РОБИТИ:
+────────────────────────
+
+Варіант 1: На Windows машині (РЕКОМЕНДУЄТЬСЯ)
+─────────────────────────────────────────────
+1. Скопіюйте всі файли проекту на Windows
+2. Запустіть: build_exe.bat
+3. .exe буде створено в папці dist/
+4. Запустіть: dist\YouTube-Downloader.exe
+
+
+Варіант 2: На Windows вручну
+──────────────────────────────
+1. Відкрийте CMD/PowerShell
+2. Перейдіть в папку проекту
+3. Запустіть:
+   
+   python -m venv venv
+   call venv\Scripts\activate.bat
+   pip install -r requirements.txt
+   pip install pyinstaller
+   pyinstaller --onefile --console --name "YouTube-Downloader" ForTheDownloader.py
+
+4. .exe буде в dist/
+
+
+Варіант 3: На Linux/macOS (як Python скрипт)
+──────────────────────────────────────────────
+Просто використовуйте Python скрипт:
+   python ForTheDownloader.py
+
+Або виконуваний файл:
+   ./dist/YouTube-Downloader
+
+
+📋 ФАЙЛИ ДЛЯ ЗАВАНТАЖЕННЯ НА WINDOWS:
+─────────────────────────────────────
+
+Обов'язково скопіюйте:
+  ✅ ForTheDownloader.py
+  ✅ requirements.txt
+  ✅ build_exe.bat
+  ✅ BUILD_EXE.md
+
+Опціонально:
+  ⚪ README.md
+  ⚪ TIPS.md
+  ⚪ QUICKSTART.md
+
+
+🔧 СИСТЕМНІ ВИМОГИ ДЛЯ КОМПІЛЯЦІЇ:
+──────────────────────────────────
+
+Windows 10/11
+Python 3.7 або новіше
+FFmpeg (для завантаження відео)
+
+
+📊 РОЗМІР .EXE:
+───────────────
+
+YouTube-Downloader.exe: ~17-100 MB
+
+Великий розмір тому що включено:
+- Python runtime (10-15 MB)
+- yt-dlp та залежності (50-80 MB)
+- Інші бібліотеки (5-10 MB)
+
+
+💾 ПОРТАТИВНІСТЬ:
+
+✅ YouTube-Downloader.exe може бути запущен на будь-якому Windows 10/11
+✅ Не потребує встановлення Python
+✅ Не потребує встановлення yt-dlp
+❌ ВСЕ ОДНО ПОТРЕБУЄ FFmpeg встановленого на системі!
+
+
+🚀 ШВИДКИЙ СТАРТ НА WINDOWS:
+──────────────────────────────
+
+1. Завантажте dist/YouTube-Downloader.exe на Windows
+2. Переконайтесь що FFmpeg встановлено:
+   ffmpeg -version
+3. Запустіть:
+   YouTube-Downloader.exe
+4. Виберіть опцію з меню
+
+
+❌ ЯКЩО НЕ ПРАЦЮЄ:
+──────────────────
+
+Проблема: "FFmpeg not found"
+Рішення: Встановіть FFmpeg
+  - Загрузить: https://ffmpeg.org/download.html
+  - Або через Chocolatey: choco install ffmpeg
+
+Проблема: "ModuleNotFoundError"
+Рішення: Перекомпілюйте .exe з наступною командою:
+  pyinstaller --onefile --console --name "YouTube-Downloader" ForTheDownloader.py
+
+Проблема: Антивірус блокує .exe
+Рішення: Додайте файл в виключення антивіруса
+
+
+📝 ІНФОРМАЦІЯ:
+──────────────
+
+Версія: 1.0
+Система: Cross-platform (Python script universal, .exe for Windows only)
+Дата: 2026
+
+Для повних інструкцій див.: BUILD_EXE.md

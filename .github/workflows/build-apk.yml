@@ -1,0 +1,66 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Set up Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '11'
+    
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v2
+      with:
+        api-levels: 31
+        ndk-version: '25.1.8937393'
+        build-tools-version: '31.0.0'
+    
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip
+        pip install buildozer cython
+        pip install -r requirements.txt
+    
+    - name: Build APK with Buildozer
+      run: |
+        export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT}
+        export ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT}
+        cd ${{ github.workspace }}
+        buildozer android debug
+      env:
+        ANDROID_SDK_ROOT: ${{ env.ANDROID_SDK_ROOT }}
+        ANDROID_NDK_ROOT: ${{ env.ANDROID_NDK_ROOT }}
+    
+    - name: Upload APK artifact
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: apk-debug
+        path: ./bin/*.apk
+        retention-days: 30
+    
+    - name: Create Release
+      if: success()
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./bin/*.apk
+        draft: false
+        prerelease: true
+        tag_name: apk-${{ github.run_number }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
